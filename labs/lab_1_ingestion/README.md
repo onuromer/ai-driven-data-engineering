@@ -98,6 +98,7 @@ Use the `finalize-tasks` skill to clean up and create a PR.
 | PokeAPI rate limiting (429 errors) | Add a small delay between requests or reduce the number of endpoints initially |
 | DuckDB file not created | Check the destination path — should be `data/pokedex.db` |
 | AI doesn't follow the task list | Explicitly tell it to read `docs/tasks/` and work on the ingestion tasks |
+| AI skips git-worktree | Some IDE tools restrict file access — the AI may fall back to `git checkout -b` instead. This is fine for the workshop |
 | Nested data not handled well | Ask the AI to check dlt's documentation via Context7 for nested JSON handling |
 
 ## Next
