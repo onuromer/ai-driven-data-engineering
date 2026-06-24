@@ -71,7 +71,18 @@ Execute the pipeline and verify the data landed correctly.
    ```
 2. If tests fail, work with the AI to fix them
 
-### Step 5 — Finalize (5 min)
+### Step 5 — Document Learnings (5 min)
+
+Capture what you learned during this lab using the `document-learnings` skill.
+
+1. Tell your AI assistant what you learned or what surprised you, for example:
+   ```
+   Use skill: document-learnings
+   ```
+2. The AI will create a file in `docs/learnings/` with the key takeaway
+3. This builds a searchable knowledge base that the AI can reference in future labs
+
+### Step 6 — Finalize (5 min)
 
 Use the `finalize-tasks` skill to clean up and create a PR.
 

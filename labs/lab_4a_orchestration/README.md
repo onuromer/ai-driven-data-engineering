@@ -46,7 +46,11 @@ In this lab you'll have AI create an Apache Airflow DAG that orchestrates the fu
 
 1. Deploy the DAG to your Airflow environment
 2. Trigger a manual run and verify it completes
-3. Use `finalize-tasks` to create a PR
+3. Document what you learned:
+   ```
+   Use skill: document-learnings
+   ```
+4. Use `finalize-tasks` to create a PR
 
 ## Checkpoints
 

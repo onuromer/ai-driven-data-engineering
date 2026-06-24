@@ -87,7 +87,17 @@ Continue with the AI to adapt the dlt and dbt configurations:
 3. Verify data in BigQuery — ask the AI to help you query it
 4. Run the tests to validate everything works
 
-### Step 6 — Finalize (5 min)
+### Step 6 — Document Learnings (5 min)
+
+Capture what you learned during this lab.
+
+1. Tell your AI assistant what you learned or what surprised you:
+   ```
+   Use skill: document-learnings
+   ```
+2. The AI will create a file in `docs/learnings/` with the key takeaway
+
+### Step 7 — Finalize (5 min)
 
 1. Use `finalize-tasks` to clean up and create a PR
 2. Review the PR — it should include Terraform files, pipeline changes, and updated dbt config

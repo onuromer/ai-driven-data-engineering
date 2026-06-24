@@ -48,7 +48,11 @@ In this lab you'll use AI to create machine learning models and generative AI qu
 2. Evaluate model accuracy
 3. Run a prediction query on new Pokemon
 4. Run the Gemini scouting report query
-5. Use `finalize-tasks` to create a PR
+5. Document what you learned:
+   ```
+   Use skill: document-learnings
+   ```
+6. Use `finalize-tasks` to create a PR
 
 ## Checkpoints
 

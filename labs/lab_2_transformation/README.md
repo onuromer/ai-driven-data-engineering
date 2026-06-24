@@ -85,7 +85,17 @@ Build and test the dbt models.
    ```
 2. The tests should validate data in both the raw tables and the dbt-created views/tables
 
-### Step 6 — Finalize (5 min)
+### Step 6 — Document Learnings (5 min)
+
+Capture what you learned during this lab.
+
+1. Tell your AI assistant what you learned or what surprised you:
+   ```
+   Use skill: document-learnings
+   ```
+2. The AI will create a file in `docs/learnings/` with the key takeaway
+
+### Step 7 — Finalize (5 min)
 
 1. Ask your AI assistant to finalize the transformation tasks
 2. Review the PR — does it include all dbt models, tests, and schema documentation?
@@ -111,6 +121,7 @@ Build and test the dbt models.
 | STAB calculation is wrong | The rule: if `pokemon.type == move.type`, multiply damage by 1.5. Verify the join logic |
 | AI creates too many models | Focus on the 3 core mart models listed in the checkpoints. Additional models are a nice-to-have |
 | AI doesn't read the PRD or tasks | Make sure you opened your project folder (`~/my-pokedex-project`), not the workshop repo. The IDE agent reads rules from the workspace root |
+| IDE asks about a "parent git repository" | Click "Never" — this means you opened the `starter/` folder inside the workshop repo instead of your own project copy. See [Setup Guide](../../SETUP.md) step 8 |
 | Context7 not providing dbt docs | Ask explicitly: "Use Context7 to look up dbt-duckdb adapter configuration" |
 
 ## Next

@@ -48,7 +48,11 @@ In this lab you'll have AI build a Streamlit dashboard that visualizes the analy
    uv run streamlit run app/main.py
    ```
 2. Interact with the dashboard — do filters work? Are charts meaningful?
-3. Use `finalize-tasks` to create a PR
+3. Document what you learned:
+   ```
+   Use skill: document-learnings
+   ```
+4. Use `finalize-tasks` to create a PR
 
 ## Checkpoints
 
