@@ -27,13 +27,22 @@ This is where most "vibe coding" goes wrong: people jump straight to implementat
 
 ## Steps
 
-### Step 1 — Explore the Starter Project (10 min)
+### Step 1 — Set Up Your Project (10 min)
 
-Before you start prompting, take a few minutes to understand the project scaffold that's already in place.
+Before you start prompting, set up your own git repository and explore the starter project.
 
-1. Open your terminal and navigate to your project directory
+1. If you haven't already, set up your own project (see [Setup Guide](../../SETUP.md), steps 8–10):
+   ```bash
+   cp -r starter/ ~/my-pokedex-project
+   cd ~/my-pokedex-project
+   git init && git checkout -b development
+   git add . && git commit -m "initial project scaffold"
+   uv venv && source .venv/bin/activate
+   uv pip install -r requirements.txt
+   ```
+   This creates a **local-only git repo** — no remote, no risk of pushing anywhere.
 2. Explore the key files:
-   - `CLAUDE.md` — Project-level instructions for your AI assistant
+   - `CLAUDE.md` / `GEMINI.md` — Project-level instructions for your AI assistant
    - `AGENTS.md` — Agent workflow rules, coding standards, and testing guidelines
    - `.agents/skills/` — The 6 skills that define your development workflow
 3. Start your AI coding assistant in the project directory

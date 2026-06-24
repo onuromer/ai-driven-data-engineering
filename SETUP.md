@@ -112,17 +112,37 @@ Download from [https://antigravity.google/download#antigravity-ide](https://anti
 
 Download from [cursor.sh](https://cursor.sh/)
 
-## 8. Clone the Starter Project
+## 8. Download the Starter Project
+
+Download and extract the starter project to your own working directory. **Do not work inside the cloned workshop repo** — you need your own independent git repo for the worktree workflow.
 
 ```bash
+# Option A: Download via git (then copy and discard the clone)
 git clone https://github.com/<org>/ai-driven-data-engineering.git
-cd ai-driven-data-engineering/starter
+cp -r ai-driven-data-engineering/starter ~/my-pokedex-project
+rm -rf ai-driven-data-engineering
+cd ~/my-pokedex-project
+
+# Option B: Download just the starter folder (if provided as a zip)
+# unzip starter.zip -d ~/my-pokedex-project
+# cd ~/my-pokedex-project
 ```
 
-## 9. Set Up the Python Environment
+## 9. Initialize Your Git Repo
+
+Create your own local git repo. This is a **local-only repo** — no remote, no risk of pushing to the workshop repo.
 
 ```bash
-cd starter
+cd ~/my-pokedex-project
+git init
+git checkout -b development
+git add .
+git commit -m "initial project scaffold"
+```
+
+## 10. Set Up the Python Environment
+
+```bash
 uv venv
 source .venv/bin/activate    # macOS/Linux
 # .venv\Scripts\activate     # Windows
@@ -130,7 +150,7 @@ source .venv/bin/activate    # macOS/Linux
 uv pip install -r requirements.txt
 ```
 
-## 10. Verify Everything Works
+## 11. Verify Everything Works
 
 Run through this checklist:
 
