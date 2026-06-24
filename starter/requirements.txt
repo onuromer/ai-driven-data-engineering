@@ -1,0 +1,6 @@
+dlt[duckdb]
+dbt-core
+dbt-duckdb
+dbt-bigquery
+pytest
+requests

@@ -209,6 +209,9 @@ __marimo__/
 # Worktrees
 worktrees/
 
+# Workshop internal docs
+docs/brainstorming.md
+
 # Misc
 data/
 tmp/
