@@ -44,50 +44,46 @@ Use the prompt from [`prompts/02_create_tasks.md`](prompts/02_create_tasks.md) t
 2. Review the generated tasks — they should cover infrastructure, pipeline adaptation, and testing
 3. Type **"Go"** to generate detailed sub-tasks
 
-### Step 3 — Implement Terraform Infrastructure (20 min)
+### Step 3 — Implement Cloud Infrastructure & Pipeline Adaptation (30 min)
 
-Use the prompt from [`prompts/03_implement_cloud.md`](prompts/03_implement_cloud.md) to have AI create Terraform files and adapt the pipeline.
+Use the prompt from [`prompts/03_implement_cloud.md`](prompts/03_implement_cloud.md) to have AI create Terraform files and adapt the pipeline for BigQuery.
 
 1. Copy the prompt into your AI assistant
-2. The AI will create Terraform configurations in `infra/`
-3. Review the generated Terraform before applying:
-   - BigQuery dataset(s)
-   - GCS bucket for dlt staging
-   - IAM / service account if needed
-4. Apply the Terraform:
+2. The AI will implement all three areas in one go:
+   - **Terraform** in `infra/` (BigQuery datasets, GCS bucket)
+   - **dlt adaptation** (dual-destination support via `PIPELINE_DESTINATION` env var)
+   - **dbt adaptation** (`prod` target in `profiles.yml` using `dbt-bigquery`, SQL dialect fixes)
+3. Review the generated code before applying
+
+### Step 4 — Deploy to GCP (10 min)
+
+1. Apply the Terraform:
    ```bash
    cd infra
    terraform init
    terraform plan
    terraform apply
    ```
-
-### Step 4 — Adapt the Pipeline (15 min)
-
-Continue with the AI to adapt the dlt and dbt configurations:
-
-1. **dlt:** Update the pipeline destination from DuckDB to BigQuery
-   - Add BigQuery credentials configuration
-   - Adjust the pipeline script to support both destinations (env variable)
-2. **dbt:** Update the dbt profile to target BigQuery
-   - Add `dbt-bigquery` adapter configuration in `profiles.yml`
-   - Verify models are compatible with BigQuery SQL dialect
-
-### Step 5 — Run End-to-End on GCP (10 min)
-
-1. Run the dlt pipeline targeting BigQuery:
+2. Set the environment variables from the Terraform outputs:
    ```bash
+   export PIPELINE_DESTINATION=bigquery
+   export GCS_BUCKET_URL=$(terraform output -raw dlt_staging_bucket_url)
+   export GCP_PROJECT=$(terraform output -raw project_id)
+   export GCP_LOCATION=$(terraform output -raw region)
+   ```
+3. Run the dlt pipeline targeting BigQuery:
+   ```bash
+   cd ..
    uv run python ingestion/pipeline.py
    ```
-2. Run dbt against BigQuery:
+4. Run dbt against BigQuery:
    ```bash
    cd transform
    dbt build --target prod
    ```
-3. Verify data in BigQuery — ask the AI to help you query it
-4. Run the tests to validate everything works
+5. Verify data in BigQuery — ask the AI to help you query it
 
-### Step 6 — Document Learnings (5 min)
+### Step 5 — Document Learnings (5 min)
 
 Capture what you learned during this lab.
 
@@ -97,7 +93,7 @@ Capture what you learned during this lab.
    ```
 2. The AI will create a file in `docs/learnings/` with the key takeaway
 
-### Step 7 — Finalize (5 min)
+### Step 6 — Finalize (5 min)
 
 1. Use `finalize-tasks` to clean up and create a PR
 2. Review the PR — it should include Terraform files, pipeline changes, and updated dbt config
@@ -124,6 +120,9 @@ Capture what you learned during this lab.
 | dlt can't connect to BigQuery | Verify credentials — `dlt` can use Application Default Credentials. Check `gcloud auth application-default print-access-token` works |
 | dbt BigQuery dialect errors | Some DuckDB SQL syntax differs from BigQuery (e.g., `::` casting). Ask the AI to fix dialect-specific issues |
 | Permission denied on GCP | Ask the instructor to verify your playground access — you need BigQuery Editor and Storage Admin roles |
+| Pipeline takes several minutes | Loading to BigQuery via GCS staging is slower than local DuckDB (~4 min for 151 Pokemon). Be patient and don't Ctrl+C |
+| "pending load packages" warning | If you interrupted a previous run, dlt resumes from where it stopped. Let it finish, then run again for fresh data |
+| `google-cloud-bigquery-storage` warning | Run `uv pip install google-cloud-bigquery-storage` — it's needed for optimized BigQuery reads |
 
 ## Next
 
