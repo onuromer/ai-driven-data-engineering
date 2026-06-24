@@ -212,7 +212,7 @@ This workflow is the **red thread** through the entire workshop. It is pre-confi
 
 ### Lab 3 — Go to Cloud (~60–75 min)
 
-**Tool type:** IDE (Antigravity IDE recommended, Cursor as alternative)
+**Tool type:** Participant's choice (CLI or IDE — they've used both by now)
 **Environment:** Local + GCP Playground
 **Workflow focus:** `create-prd` (update) → `create-tasks` → `implement-tasks` → `finalize-tasks`
 

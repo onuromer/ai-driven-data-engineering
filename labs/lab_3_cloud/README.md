@@ -15,7 +15,7 @@ This lab demonstrates two things: AI handles Infrastructure-as-Code just as well
 
 | | |
 |---|---|
-| **Tool type** | IDE (Antigravity IDE (recommended) or Cursor) |
+| **Tool type** | Your choice — CLI or IDE (you've used both, pick what works for you) |
 | **Environment** | Local + GCP Playground |
 | **Duration** | 60–75 minutes |
 

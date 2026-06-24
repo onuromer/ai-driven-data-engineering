@@ -111,7 +111,8 @@ Each lab focuses on a tool *category* — you choose which specific tool to use:
 | Category | Recommended | Alternative |
 |----------|-------------|-------------|
 | **CLI** (Labs 0–1) | Claude Code, Antigravity CLI | — |
-| **IDE** (Labs 2–3) | Antigravity IDE | Cursor |
+| **IDE** (Lab 2) | Antigravity IDE | Cursor |
+| **Labs 3+** | Your choice — you've tried both, pick what works for you | |
 
 The workshop methodology is tool-agnostic. The same context engineering principles apply everywhere.
 
