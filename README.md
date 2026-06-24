@@ -117,7 +117,9 @@ The workshop methodology is tool-agnostic. The same context engineering principl
 
 ## Prerequisites
 
-Install the following **before** the workshop:
+**See the [Setup Guide](SETUP.md) for detailed installation instructions.**
+
+Quick summary — install before the workshop:
 
 - **Python 3.11+** and [uv](https://docs.astral.sh/uv/) (package manager)
 - **Git** (2.20+)
