@@ -31,7 +31,14 @@ Same workflow, different tool — that's the point. The context engineering prin
 
 1. Open the project in your IDE tool (Antigravity IDE (recommended) or Cursor)
 2. Verify the IDE detects the project rules (`CLAUDE.md`, `AGENTS.md`, or `.cursorrules`)
-3. Confirm the raw data exists by checking `data/pokedex.db`
+3. **Verify the raw data exists** — Lab 2 depends on Lab 1's ingested data:
+   ```bash
+   # Check the database file exists
+   ls -la data/pokedex.db
+
+   # If missing, run the ingestion pipeline first
+   uv run python ingestion/pipeline.py
+   ```
 
 ### Step 2 — Create a Feature Branch (5 min)
 
@@ -98,7 +105,7 @@ Build and test the dbt models.
 
 | Issue | Solution |
 |-------|----------|
-| `dbt build` fails — can't find source tables | Ensure Lab 1's pipeline has been run and `data/pokedex.db` contains data. Check that `profiles.yml` points to the correct DuckDB path |
+| `dbt build` fails — can't find source tables | Run `ls data/pokedex.db` — if missing, run `uv run python ingestion/pipeline.py` first. Check that `profiles.yml` points to the correct DuckDB path |
 | dbt can't find the profile | Create or check `profiles.yml` in the `transform/` directory — it should reference the DuckDB adapter |
 | Staging models are too complex | Staging should be simple: `SELECT`, rename, cast. Push logic to the marts layer |
 | STAB calculation is wrong | The rule: if `pokemon.type == move.type`, multiply damage by 1.5. Verify the join logic |
