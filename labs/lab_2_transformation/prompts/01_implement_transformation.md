@@ -58,6 +58,12 @@ Mart Models:
    - STAB flag: true when the move's type matches one of the Pokemon's types
    - STAB power: if STAB is true, power * 1.5
 
+DOCUMENTATION
+
+- Add descriptions for every model and column in schema.yml files
+- These descriptions power dbt docs generate and should be meaningful
+  (e.g., "Base Stat Total — sum of all six base stats" not just "BST")
+
 TESTING
 
 - Define dbt tests in schema.yml files:

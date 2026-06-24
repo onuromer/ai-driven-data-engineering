@@ -77,7 +77,26 @@ Build and test the dbt models.
    dbt show --select fct_pokemon_stats --limit 10
    ```
 
-### Step 5 — Run End-to-End Tests (5 min)
+### Step 5 — Explore the dbt Documentation (5 min)
+
+One of dbt's strengths is auto-generated documentation. See your entire data lineage and model descriptions in a browser.
+
+1. Generate the docs:
+   ```bash
+   cd transform
+   dbt docs generate
+   ```
+2. Serve them locally:
+   ```bash
+   dbt docs serve
+   ```
+3. Your browser will open a documentation site. Explore:
+   - **Lineage graph** — click "View Lineage" to see how raw → staging → marts connects
+   - **Model details** — click on any model to see its columns, tests, and description
+   - **Source definitions** — see how dbt maps to the raw dlt tables
+4. Press `Ctrl+C` in the terminal to stop the docs server
+
+### Step 6 — Run End-to-End Tests (5 min)
 
 1. Ask the AI to run the project tests:
    ```bash
@@ -85,7 +104,7 @@ Build and test the dbt models.
    ```
 2. The tests should validate data in both the raw tables and the dbt-created views/tables
 
-### Step 6 — Document Learnings (5 min)
+### Step 7 — Document Learnings (5 min)
 
 Capture what you learned during this lab.
 
@@ -95,7 +114,7 @@ Capture what you learned during this lab.
    ```
 2. The AI will create a file in `docs/learnings/` with the key takeaway
 
-### Step 7 — Finalize (5 min)
+### Step 8 — Finalize (5 min)
 
 1. Ask your AI assistant to finalize the transformation tasks
 2. Review the PR — does it include all dbt models, tests, and schema documentation?

@@ -1,0 +1,11 @@
+pokedex:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: ../data/pokedex.db
+      schema: main
+    test:
+      type: duckdb
+      path: ../data/test_pokedex.db
+      schema: main
