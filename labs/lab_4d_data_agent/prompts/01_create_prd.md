@@ -31,12 +31,14 @@ System Prompt:
 - The dataset prefix should come from an environment variable (GCP_PROJECT_ID and dataset name)
 - Include 3-5 example questions the agent can answer
 
-CLI Runner (agent/main.py):
-- Interactive CLI with a simple input loop (input() → agent response → print)
-- Print both the agent's natural language answer and any SQL queries it executed
-- Exit on "quit", "exit", or Ctrl+C
-- Keep it simple — no fancy TUI, no streaming, just input/print
-- Use async conversation with the ADK runner
+Running the Agent:
+- Primary: Use the ADK Web UI ("adk web agent") for interactive chat, event inspection, and session management
+- The agent package must expose a "root_agent" variable in __init__.py so "adk web" can auto-discover it
+- Follow the standard ADK agent package layout
+- Alternative: Also create a simple CLI runner (agent/main.py) with an input/print loop for terminal-based interaction
+  - Print both the agent's answer and any SQL queries executed
+  - Exit on "quit", "exit", or Ctrl+C
+  - Use async conversation with the ADK runner
 
 Agent Capabilities:
 - Answer questions about Pokemon stats, type effectiveness, and competitive moves

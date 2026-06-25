@@ -66,21 +66,37 @@ This file is used by the `implement-tasks` skill to look up ADK APIs and pattern
    ```
    `BQ_DATASET_NAME` defaults to `pokedex_marts` if not set.
 
-2. Start the agent:
+2. Install the ADK CLI (if not already installed):
+   ```bash
+   uv pip install google-adk
+   ```
+
+3. Launch the ADK Web UI:
+   ```bash
+   adk web agent
+   ```
+   This starts a local web interface where you can chat with the agent, inspect events, view session state, and see the SQL queries it executes. Open the URL shown in the terminal (usually `http://localhost:8000`).
+
+   **Alternative — run directly from the terminal:**
    ```bash
    uv run python -m agent.main
    ```
-3. Try asking questions like:
+
+4. Try asking questions like:
    - "Which Pokemon has the highest Base Stat Total?"
    - "Show me all Fire-type Pokemon with speed above 100"
    - "What are the top 5 STAB moves for Charizard?"
    - "Which types are super effective against Dragon?"
-4. Observe how the agent generates SQL and queries the mart models
-5. Document what you learned:
+
+5. Observe in the Web UI (or terminal output):
+   - The SQL queries the agent generates and executes
+   - The event history showing tool calls and responses
+   - How follow-up questions maintain conversation context
+6. Document what you learned:
    ```
    Use skill: document-learnings
    ```
-6. Use `finalize-tasks` to create a PR
+7. Use `finalize-tasks` to create a PR
 
 ## Checkpoints
 
@@ -89,7 +105,7 @@ This file is used by the `implement-tasks` skill to look up ADK APIs and pattern
 - [ ] Agent connects to BigQuery and queries mart models
 - [ ] Agent answers natural-language questions about Pokemon data
 - [ ] System prompt includes context about the data model (tables, columns, relationships)
-- [ ] Agent runs locally via CLI
+- [ ] Agent runs locally via ADK Web UI (`adk web`)
 - [ ] PR created
 
 ## Troubleshooting
