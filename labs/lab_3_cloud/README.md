@@ -138,6 +138,7 @@ Capture what you learned during this lab.
 | dlt can't connect to BigQuery | Verify credentials — `dlt` can use Application Default Credentials. Check `gcloud auth application-default print-access-token` works |
 | dbt BigQuery dialect errors | Some DuckDB SQL syntax differs from BigQuery (e.g., `::` casting). Ask the AI to fix dialect-specific issues |
 | Permission denied on GCP | Ask the instructor to verify your playground access — you need BigQuery Editor and Storage Admin roles |
+| Need to debug BigQuery data | Install the BigQuery MCP Server from the Marketplace in your IDE or CLI — it lets your AI tool query BigQuery directly to inspect schemas, tables, and data |
 | Pipeline takes several minutes | Loading to BigQuery via GCS staging is slower than local DuckDB (~4 min for 151 Pokemon). Be patient and don't Ctrl+C |
 | "pending load packages" warning | If you interrupted a previous run, dlt resumes from where it stopped. Let it finish, then run again for fresh data |
 | `google-cloud-bigquery-storage` warning | Run `uv pip install google-cloud-bigquery-storage` — it's needed for optimized BigQuery reads |
