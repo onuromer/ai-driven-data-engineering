@@ -32,27 +32,16 @@ dbt Execution Strategy:
 - BashOperator commands: "dbt deps", "dbt build --target prod", "dbt docs generate"
 
 GCP APIs (Terraform):
-- Enable all APIs that Cloud Composer depends on before creating the environment:
-  - composer.googleapis.com
-  - compute.googleapis.com
-  - container.googleapis.com (GKE, used internally by Composer 2)
-  - monitoring.googleapis.com
-  - logging.googleapis.com
-  - cloudresourcemanager.googleapis.com
-- Use google_project_service resources with disable_on_destroy = false
-
-Networking (Terraform):
-- Create a dedicated VPC network and subnet for the Composer environment
-- The subnet needs a secondary IP range for GKE pods and services (Composer 2 runs on GKE internally)
-- Reference this VPC/subnet in the Composer environment's node_config
+- Enable the Cloud Composer API (composer.googleapis.com) before creating the environment
+- Use google_project_service with disable_on_destroy = false
 
 Managed Service for Apache Airflow Infrastructure (Terraform):
-- Provision a Managed Service for Apache Airflow environment using Terraform (extend existing infra/ directory)
-- Use ENVIRONMENT_SIZE_SMALL for the workshop
-- Use the default Compute Engine service account — specify it explicitly in node_config as {project-number}-compute@developer.gserviceaccount.com
-- Grant the Composer Service Agent the roles/composer.ServiceAgentV2Ext role
+- Use Composer 3 (NOT Composer 2) — it's simpler and doesn't require VPC/subnet setup
+- Use the google-beta provider (required for Composer 3)
+- Image version: use a composer-3-airflow-2 version (e.g., "composer-3-airflow-2.11.1-build.6")
+- Create a custom service account with roles/composer.worker role
+- Do NOT create a VPC or subnet — Composer 3 manages networking internally
 - Include pypi_packages for dbt-core, dbt-bigquery, dlt[bigquery], requests, and google-cloud-storage
-- Set depends_on to ensure APIs, IAM bindings, and networking are created before the Composer environment
 - Deploy DAG files to the Airflow GCS bucket via Terraform using google_storage_bucket_object
 - Configure Airflow Variables via a variables.json uploaded to GCS data/ folder
 - Import variables via gcloud composer environments run ... variables import (as a Terraform local-exec provisioner)
@@ -76,7 +65,12 @@ Testing:
 
 TECHNICAL CONSTRAINTS
 
-- Use Airflow 2.x with Managed Service for Apache Airflow (composer-2-airflow-2 image)
+- Use google-beta provider for Composer 3 support
+- Use Airflow 2.x with Composer 3 image
 - No hardcoded paths, project IDs, or credentials — use Airflow Variables
-- The default Compute Engine service account must have BigQuery Editor and GCS permissions (these are typically granted by default in the workshop playground)
+- The custom service account needs roles/composer.worker plus BigQuery Editor and GCS permissions
+
+REFERENCE
+
+See https://docs.cloud.google.com/composer/docs/composer-3/terraform-create-environments for Composer 3 Terraform setup.
 ~~~

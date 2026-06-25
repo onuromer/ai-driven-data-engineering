@@ -1,11 +1,11 @@
-# Prompt: Implement Orchestration with Managed Service for Apache Airflow
+# Prompt: Implement Orchestration with Managed Airflow
 
 Copy the prompt below into your AI coding assistant.
 
 ~~~
 Use skill: implement-tasks
 
-Read the orchestration tasks in docs/tasks/ and implement the full end-to-end pipeline orchestration with Managed Service for Apache Airflow deployment.
+Read the orchestration tasks in docs/tasks/ and implement the full end-to-end pipeline orchestration with Managed Airflow deployment.
 
 1. AIRFLOW DAG
 
@@ -29,39 +29,39 @@ Implementation notes:
 - Add DAG documentation (doc_md) explaining what the pipeline does
 - No hardcoded credentials — use Airflow Variables and environment
 
-2. TERRAFORM FOR MANAGED AIRFLOW
+2. TERRAFORM FOR MANAGED AIRFLOW (COMPOSER 3)
+
+Important: Use Composer 3 (NOT Composer 2). This requires the google-beta provider.
 
 Extend the existing infra/ directory:
 
 infra/
 ├── ... (existing BigQuery, GCS files)
-├── apis.tf              # Enable required GCP APIs (composer, compute, container, etc.)
-├── composer_network.tf  # Dedicated VPC network and subnet for Composer
-├── composer_iam.tf      # Composer Service Agent IAM binding
-├── composer.tf          # Composer environment + DAG/dbt deployment + variables
+├── composer.tf          # Composer 3 environment + DAG/dbt deployment + variables
 
-GCP APIs (apis.tf):
-- Enable: composer, compute, container, monitoring, logging, cloudresourcemanager
-- Use google_project_service with disable_on_destroy = false
+Composer 3 setup:
+- Use google-beta provider
+- Enable composer.googleapis.com API
+- Create a custom service account (google_service_account) with roles/composer.worker
+- Create the Composer environment (google_composer_environment) with:
+  - provider = google-beta
+  - image_version = "composer-3-airflow-2.11.1-build.6" (or similar composer-3 version)
+  - node_config.service_account = the custom service account
+  - No VPC or subnet needed (Composer 3 manages networking internally)
+  - pypi_packages: dbt-core, dbt-bigquery, dlt[bigquery], requests, google-cloud-storage
+- depends_on: API enablement and service account creation
 
-Networking (composer_network.tf):
-- Create a VPC network (google_compute_network) for Composer
-- Create a subnet (google_compute_subnetwork) with secondary IP ranges for GKE pods/services
+File deployment:
+- Upload DAG files from dags/ to the Composer GCS bucket using google_storage_bucket_object
+- Upload dbt project files to dags/transform/ subdirectory
+- Upload ingestion scripts to dags/ingestion/ subdirectory
+- Create and upload variables.json to the GCS data/ folder
+- Import variables via gcloud composer environments run ... variables import (local-exec provisioner)
 
-IAM (composer_iam.tf):
-- Grant roles/composer.ServiceAgentV2Ext to the Composer Service Agent
-- Use data.google_project to look up the project number
-
-Environment (composer.tf):
-- Managed Service for Apache Airflow with image_version "composer-2-airflow-2"
-- ENVIRONMENT_SIZE_SMALL
-- node_config with explicit service_account and the VPC network/subnet
-- pypi_packages: dbt-core, dbt-bigquery, dlt[bigquery], requests, google-cloud-storage
-- depends_on: APIs, IAM, and networking must be created first
-- Upload DAG files from dags/ to the Airflow GCS bucket using google_storage_bucket_object
-- Upload dbt project and ingestion scripts to dags/ subdirectories
-- Create a variables.json with project config and upload to Airflow GCS data/ folder
-- Import variables via a local-exec provisioner: gcloud composer environments run ... variables import
+Outputs:
+- composer_environment_name
+- composer_airflow_uri (Airflow UI URL)
+- composer_gcs_bucket
 
 3. TESTING
 
@@ -73,7 +73,7 @@ Environment (composer.tf):
 ## While the AI Works
 
 Observe how it handles:
-- Structuring the Terraform for the Airflow environment (VPC, service accounts, IAM)
-- Configuring `pypi_packages` for the Airflow environment
-- DAG deployment via GCS bucket objects
+- Setting up Composer 3 with the google-beta provider
+- Creating the service account and IAM bindings
+- DAG and dbt file deployment to the GCS bucket
 - Airflow Variable management
