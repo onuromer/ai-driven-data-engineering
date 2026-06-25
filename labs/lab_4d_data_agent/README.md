@@ -59,21 +59,28 @@ This file is used by the `implement-tasks` skill to look up ADK APIs and pattern
 
 ### Step 4 — Run and Test (10–15 min)
 
-1. Start the agent:
+1. Set the environment variables for the agent (use your GCP project from Lab 3):
    ```bash
-   uv run python agent/main.py
+   export GCP_PROJECT_ID="your-gcp-project-id"
+   export GCP_LOCATION="us-central1"
    ```
-2. Try asking questions like:
+   `BQ_DATASET_NAME` defaults to `pokedex_marts` if not set.
+
+2. Start the agent:
+   ```bash
+   uv run python -m agent.main
+   ```
+3. Try asking questions like:
    - "Which Pokemon has the highest Base Stat Total?"
    - "Show me all Fire-type Pokemon with speed above 100"
    - "What are the top 5 STAB moves for Charizard?"
    - "Which types are super effective against Dragon?"
-3. Observe how the agent generates SQL and queries the mart models
-4. Document what you learned:
+4. Observe how the agent generates SQL and queries the mart models
+5. Document what you learned:
    ```
    Use skill: document-learnings
    ```
-5. Use `finalize-tasks` to create a PR
+6. Use `finalize-tasks` to create a PR
 
 ## Checkpoints
 
@@ -93,6 +100,7 @@ This file is used by the `implement-tasks` skill to look up ADK APIs and pattern
 | Agent can't connect to BigQuery | Check `gcloud auth application-default login` and verify the GCP project is set |
 | Agent generates wrong SQL | Improve the system prompt with more detail about table schemas and column descriptions |
 | Agent hallucinates table names | Add the exact table names from your marts layer to the system prompt |
+| `ConfigError: GCP_PROJECT_ID not set` | Run `export GCP_PROJECT_ID="your-project-id"` and `export GCP_LOCATION="us-central1"` before starting the agent |
 
 ## Falling Behind?
 
