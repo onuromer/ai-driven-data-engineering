@@ -268,6 +268,11 @@ For faster groups, extended workshop formats, or take-home exercises.
 - **BQML:** Train a classification model to predict Pokemon type from base stats
 - **Gemini in BigQuery:** Use `ML.GENERATE_TEXT` to generate natural-language scouting reports from structured Pokemon data
 
+#### Lab 4d — Data Agent with Google ADK
+
+**Environment:** GCP
+**What participants build:** A conversational data agent using Google ADK that lets users query the Pokemon analytics data in BigQuery using natural language. The agent generates and executes SQL against the mart models, turning the data platform into an interactive Q&A experience.
+
 ---
 
 ## What Participants Receive
@@ -327,7 +332,8 @@ ai-driven-data-engineering/
 │   │   ├── prompts/
 │   │   └── solutions/
 │   │
-│   └── lab_4c_ai_ml/                  # Optional
+│   ├── lab_4c_ai_ml/                  # Optional
+│   └── lab_4d_data_agent/             # Optional
 │       ├── README.md
 │       ├── prompts/
 │       └── solutions/

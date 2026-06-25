@@ -88,6 +88,7 @@ For faster groups or extended workshop formats:
 | **4a — Orchestrate It** | An Airflow DAG that schedules the full pipeline |
 | **4b — Visualize It** | A Streamlit dashboard with power rankings, type heatmaps, and move analytics |
 | **4c — AI/ML on It** | A BQML model to predict Pokemon types from stats + Gemini-powered scouting reports |
+| **4d — Talk to It** | A conversational data agent (Google ADK) that answers natural-language questions about your data |
 
 ## Tech Stack
 
@@ -163,7 +164,8 @@ ai-driven-data-engineering/
 │   ├── lab_3_cloud/                 # Ship it
 │   ├── lab_4a_orchestration/        # Orchestrate it (optional)
 │   ├── lab_4b_visualization/        # Visualize it (optional)
-│   └── lab_4c_ai_ml/               # AI/ML on it (optional)
+│   ├── lab_4c_ai_ml/               # AI/ML on it (optional)
+│   └── lab_4d_data_agent/          # Talk to it (optional)
 └── docs/                 # Workshop outline and planning
 ```
 

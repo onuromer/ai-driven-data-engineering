@@ -162,3 +162,4 @@ You've completed the core workshop! If time allows, continue with one of the opt
 - [Lab 4a — Orchestrate It](../lab_4a_orchestration/README.md) — Schedule the pipeline with Airflow
 - [Lab 4b — Visualize It](../lab_4b_visualization/README.md) — Build a Streamlit dashboard
 - [Lab 4c — AI/ML on It](../lab_4c_ai_ml/README.md) — Train BQML models and use Gemini on your data
+- [Lab 4d — Talk to It](../lab_4d_data_agent/README.md) — Build a conversational data agent with Google ADK
