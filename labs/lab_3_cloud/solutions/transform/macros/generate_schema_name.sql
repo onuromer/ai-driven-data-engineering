@@ -1,15 +1,15 @@
 {% macro generate_schema_name(custom_schema_name, node) -%}
-    {%- if target.type == 'bigquery' -%}
-        {%- if custom_schema_name is none -%}
-            {{ target.schema }}
-        {%- else -%}
-            {{ target.schema }}_{{ custom_schema_name | trim }}
-        {%- endif -%}
+    {#-
+        Controls which schema/dataset dbt models land in.
+        - DuckDB (dev/test): uses the custom schema name as-is (e.g. 'staging', 'marts')
+        - BigQuery (prod): prefixes with 'pokedex_' to match Terraform-provisioned datasets
+          (e.g. 'staging' → 'pokedex_staging', 'marts' → 'pokedex_marts')
+    -#}
+    {%- if custom_schema_name is none -%}
+        {{ target.schema }}
+    {%- elif target.type == 'bigquery' -%}
+        pokedex_{{ custom_schema_name | trim }}
     {%- else -%}
-        {%- if custom_schema_name is none -%}
-            {{ target.schema }}
-        {%- else -%}
-            {{ custom_schema_name | trim }}
-        {%- endif -%}
+        {{ custom_schema_name | trim }}
     {%- endif -%}
 {%- endmacro %}

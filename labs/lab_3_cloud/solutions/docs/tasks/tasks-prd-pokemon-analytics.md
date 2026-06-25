@@ -69,30 +69,30 @@ This document breaks down the Product Requirements Document (PRD) into vertical 
   - [ ] 5.4 Run `dbt build` for the entire project to ensure all models compile, run, and pass their validation tests end-to-end.
   - [ ] 5.5 Document all columns, calculations, and tables in the schema markdown file.
 
-- [ ] 6.0 Terraform Infrastructure for GCP (BigQuery Datasets, GCS Bucket, IAM)
-  - [ ] 6.1 Create `infra/main.tf` with the Terraform `google` provider configuration. Define `google_bigquery_dataset` resources for `pokedex_raw`, `pokedex_staging`, and `pokedex_marts` in the configured GCP project and location.
-  - [ ] 6.2 Add a `google_storage_bucket` resource for the dlt staging bucket (used for intermediate file staging during BigQuery loads). Configure lifecycle rules and uniform bucket-level access.
-  - [ ] 6.3 Create `infra/variables.tf` defining input variables: `gcp_project_id` (required), `gcp_location` (default `us-central1`), `gcs_bucket_name` (required), and any optional variables for resource naming prefixes.
-  - [ ] 6.4 Create `infra/outputs.tf` exposing the created resource identifiers: BigQuery dataset IDs, GCS bucket name, and GCS bucket URL for downstream pipeline configuration.
-  - [ ] 6.5 Create `infra/terraform.tfvars.example` with placeholder values documenting the expected variable inputs. Add `*.tfvars` and `.terraform/` to `.gitignore`.
-  - [ ] 6.6 Validate the Terraform configuration by running `terraform init` and `terraform validate` in the `infra/` directory. Fix any syntax or provider errors.
+- [x] 6.0 Terraform Infrastructure for GCP (BigQuery Datasets, GCS Bucket, IAM)
+  - [x] 6.1 Create `infra/main.tf` with the Terraform `google` provider configuration. Define `google_bigquery_dataset` resources for `pokedex_raw`, `pokedex_staging`, and `pokedex_marts` in the configured GCP project and location.
+  - [x] 6.2 Add a `google_storage_bucket` resource for the dlt staging bucket (used for intermediate file staging during BigQuery loads). Configure lifecycle rules and uniform bucket-level access.
+  - [x] 6.3 Create `infra/variables.tf` defining input variables: `gcp_project_id` (required), `gcp_location` (default `us-central1`), `gcs_bucket_name` (required), and any optional variables for resource naming prefixes.
+  - [x] 6.4 Create `infra/outputs.tf` exposing the created resource identifiers: BigQuery dataset IDs, GCS bucket name, and GCS bucket URL for downstream pipeline configuration.
+  - [x] 6.5 Create `infra/terraform.tfvars.example` with placeholder values documenting the expected variable inputs. Add `*.tfvars` and `.terraform/` to `.gitignore`.
+  - [x] 6.6 Validate the Terraform configuration by running `terraform init` and `terraform validate` in the `infra/` directory. Fix any syntax or provider errors.
   - [ ] 6.7 Run `terraform plan` against a real GCP project to verify the execution plan creates exactly 3 BigQuery datasets and 1 GCS bucket with no errors.
-  - [ ] 6.8 Document the Terraform setup in `infra/README.md`: prerequisites (GCP project, `gcloud` auth, Terraform >= 1.5), usage instructions (`init`, `plan`, `apply`), and variable descriptions.
+  - [x] 6.8 Document the Terraform setup in `infra/README.md`: prerequisites (GCP project, `gcloud` auth, Terraform >= 1.5), usage instructions (`init`, `plan`, `apply`), and variable descriptions.
 
-- [ ] 7.0 Dual-Destination Pipeline Adaptation (dlt → BigQuery, dbt → prod target)
-  - [ ] 7.1 Refactor `ingestion/pipeline.py` `run_pipeline()` to read the `DESTINATION` environment variable. When `DESTINATION=bigquery`, configure the dlt pipeline with `destination="bigquery"` and `staging="filesystem"` using the GCS bucket from `GCS_BUCKET_NAME`. When unset or `DESTINATION=duckdb`, preserve the existing DuckDB behavior unchanged.
-  - [ ] 7.2 When `DESTINATION=bigquery`, configure dlt to use `GCP_PROJECT_ID` for the BigQuery project and `GCS_BUCKET_NAME` for the filesystem staging location. Ensure credentials are resolved via Application Default Credentials (ADC) — no service account key files.
-  - [ ] 7.3 Update `transform/profiles.yml` to add a `prod` target using the `dbt-bigquery` adapter. The target must reference `GCP_PROJECT_ID` via Jinja env_var(), set `dataset` to `pokedex_raw` (for source), and configure the `location` from `GCP_LOCATION`. Keep the existing `dev` and `test` targets unchanged.
-  - [ ] 7.4 Create `.env.example` at the project root documenting all environment variables: `POKEMON_LIMIT`, `DESTINATION`, `GCP_PROJECT_ID`, `GCP_LOCATION`, and `GCS_BUCKET_NAME`, with inline comments explaining defaults and valid values.
-  - [ ] 7.5 Write backward compatibility tests in `tests/test_pipeline.py` that verify: (a) when `DESTINATION` is unset, the pipeline defaults to DuckDB, (b) when `DESTINATION=duckdb`, it explicitly uses DuckDB, and (c) the pipeline function signature and return value remain unchanged. Use mocking/patching of `dlt.pipeline` to verify the destination argument without requiring GCP credentials.
-  - [ ] 7.6 Run the full existing test suite (`uv run pytest tests/ -v`) to confirm all pre-existing DuckDB-based tests pass without modification — zero regressions.
-  - [ ] 7.7 Add logging in `run_pipeline()` to clearly report which destination is active, the GCS staging bucket (if BigQuery), and the GCP project ID at pipeline startup.
-  - [ ] 7.8 Update docstrings in `ingestion/pipeline.py` and add a "Cloud Deployment" section to `README.md` documenting the dual-destination configuration, required environment variables, and how to switch between dev (DuckDB) and prod (BigQuery).
+- [x] 7.0 Dual-Destination Pipeline Adaptation (dlt → BigQuery, dbt → prod target)
+  - [x] 7.1 Refactor `ingestion/pipeline.py` `run_pipeline()` to read the `PIPELINE_DESTINATION` environment variable. When `PIPELINE_DESTINATION=bigquery`, configure the dlt pipeline with `destination="bigquery"` and `staging="filesystem"` using the GCS bucket from `GCS_BUCKET_NAME`. When unset or `PIPELINE_DESTINATION=duckdb`, preserve the existing DuckDB behavior unchanged.
+  - [x] 7.2 When `PIPELINE_DESTINATION=bigquery`, configure dlt to use `GCP_PROJECT_ID` for the BigQuery project and `GCS_BUCKET_NAME` for the filesystem staging location. Ensure credentials are resolved via Application Default Credentials (ADC) — no service account key files.
+  - [x] 7.3 Update `transform/profiles.yml` to add a `prod` target using the `dbt-bigquery` adapter. The target must reference `GCP_PROJECT_ID` via Jinja env_var(), set `dataset` to `pokedex_raw` (for source), and configure the `location` from `GCP_LOCATION`. Keep the existing `dev` and `test` targets unchanged.
+  - [x] 7.4 Create `.env.example` at the project root documenting all environment variables: `POKEMON_LIMIT`, `PIPELINE_DESTINATION`, `GCP_PROJECT_ID`, `GCP_LOCATION`, and `GCS_BUCKET_NAME`, with inline comments explaining defaults and valid values.
+  - [x] 7.5 Write backward compatibility tests in `tests/test_pipeline.py` that verify: (a) when `PIPELINE_DESTINATION` is unset, the pipeline defaults to DuckDB, (b) when `PIPELINE_DESTINATION=duckdb`, it explicitly uses DuckDB, and (c) the pipeline function signature and return value remain unchanged. Use mocking/patching of `dlt.pipeline` to verify the destination argument without requiring GCP credentials.
+  - [x] 7.6 Run the full existing test suite (`uv run pytest tests/ -v`) to confirm all pre-existing DuckDB-based tests pass without modification — zero regressions.
+  - [x] 7.7 Add logging in `run_pipeline()` to clearly report which destination is active, the GCS staging bucket (if BigQuery), and the GCP project ID at pipeline startup.
+  - [x] 7.8 Update docstrings in `ingestion/pipeline.py` and add a "Cloud Deployment" section to `README.md` documenting the dual-destination configuration, required environment variables, and how to switch between dev (DuckDB) and prod (BigQuery).
 
 - [ ] 8.0 End-to-End Cloud Verification (BigQuery Pipeline + dbt prod)
   - [ ] 8.1 Run `terraform apply` in `infra/` against a real GCP project to provision all resources. Verify via `bq ls` and `gsutil ls` that the 3 BigQuery datasets and GCS bucket exist.
-  - [ ] 8.2 Execute the dlt pipeline with `DESTINATION=bigquery`, `GCP_PROJECT_ID`, `GCS_BUCKET_NAME`, and `POKEMON_LIMIT=5` (small subset for fast verification). Confirm data lands in the `pokedex_raw` BigQuery dataset.
+  - [ ] 8.2 Execute the dlt pipeline with `PIPELINE_DESTINATION=bigquery`, `GCP_PROJECT_ID`, `GCS_BUCKET_NAME`, and `POKEMON_LIMIT=5` (small subset for fast verification). Confirm data lands in the `pokedex_raw` BigQuery dataset.
   - [ ] 8.3 Run `dbt build --target prod` from the `transform/` directory. Verify that all staging and marts models compile and execute against BigQuery without SQL dialect errors.
   - [ ] 8.4 Validate data parity: compare row counts for key tables (`pokemon`, `types`, `moves`, `fct_pokemon_stats`, `dim_type_effectiveness`, `fct_competitive_moves`) between the DuckDB dev output and the BigQuery prod output to confirm they match.
-  - [ ] 8.5 Re-run the full DuckDB test suite (`uv run pytest tests/ -v`) one final time to confirm zero regressions after all Feature 3 code changes.
+  - [x] 8.5 Re-run the full DuckDB test suite (`uv run pytest tests/ -v`) one final time to confirm zero regressions after all Feature 3 code changes.
   - [ ] 8.6 Document the end-to-end cloud verification process as a runbook in `docs/runbooks/cloud-deployment.md`, including: prerequisite setup steps, the exact commands to run, expected outputs, and troubleshooting tips for common GCP auth or permission errors.

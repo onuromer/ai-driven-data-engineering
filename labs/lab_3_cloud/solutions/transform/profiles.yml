@@ -12,10 +12,8 @@ pokedex:
     prod:
       type: bigquery
       method: oauth
-      project: "{{ env_var('GCP_PROJECT') }}"
-      dataset: pokedex
+      project: "{{ env_var('GCP_PROJECT_ID') }}"
+      dataset: pokedex_raw
+      location: "{{ env_var('GCP_LOCATION', 'us-central1') }}"
       threads: 4
       timeout_seconds: 300
-      location: "{{ env_var('GCP_LOCATION', 'us-central1') }}"
-      priority: interactive
-

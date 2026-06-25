@@ -1,21 +1,15 @@
-variable "project_id" {
-  description = "The Google Cloud Project ID"
+variable "gcp_project_id" {
+  description = "The Google Cloud project ID to deploy resources into."
   type        = string
 }
 
-variable "region" {
-  description = "The Google Cloud region to provision resources in"
+variable "gcp_location" {
+  description = "The GCP region/location for BigQuery datasets and GCS bucket."
   type        = string
   default     = "us-central1"
 }
 
-variable "dataset_prefix" {
-  description = "Prefix for the BigQuery datasets"
-  type        = string
-  default     = "pokedex"
-}
-
-variable "bucket_name" {
-  description = "The name of the GCS bucket for dlt pipeline staging"
+variable "gcs_bucket_name" {
+  description = "Name of the GCS bucket for dlt pipeline staging files."
   type        = string
 }

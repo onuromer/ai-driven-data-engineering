@@ -1,7 +1,7 @@
 with pokemon_stats_long as (
     select
         cast(raw_pokemon.id as integer) as pokemon_id,
-        cast(pokemon_stats.stat__name as string) as stat_name,
+        cast(pokemon_stats.stat__name as {{ dbt.type_string() }}) as stat_name,
         cast(pokemon_stats.base_stat as integer) as base_stat
     from {{ source('raw', 'pokemon') }} as raw_pokemon
     inner join {{ source('raw', 'pokemon__stats') }} as pokemon_stats

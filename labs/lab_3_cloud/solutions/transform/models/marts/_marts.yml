@@ -1,0 +1,172 @@
+version: 2
+
+models:
+  - name: dim_type_effectiveness
+    description: >
+      Complete 18x18 type effectiveness matrix for standard Pokemon types.
+      Each row represents how effective an attacking type is against a defending type.
+    columns:
+      - name: attacking_type
+        description: The offensive type dealing damage
+        data_tests:
+          - not_null
+          - accepted_values:
+              values:
+                [
+                  "normal",
+                  "fire",
+                  "water",
+                  "electric",
+                  "grass",
+                  "ice",
+                  "fighting",
+                  "poison",
+                  "ground",
+                  "flying",
+                  "psychic",
+                  "bug",
+                  "rock",
+                  "ghost",
+                  "dragon",
+                  "steel",
+                  "dark",
+                  "fairy",
+                ]
+      - name: defending_type
+        description: The defensive type receiving damage
+        data_tests:
+          - not_null
+          - accepted_values:
+              values:
+                [
+                  "normal",
+                  "fire",
+                  "water",
+                  "electric",
+                  "grass",
+                  "ice",
+                  "fighting",
+                  "poison",
+                  "ground",
+                  "flying",
+                  "psychic",
+                  "bug",
+                  "rock",
+                  "ghost",
+                  "dragon",
+                  "steel",
+                  "dark",
+                  "fairy",
+                ]
+      - name: damage_multiplier
+        description: Damage multiplier (2.0 super effective, 1.0 normal, 0.5 not very effective, 0.0 immune)
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: [0.0, 0.5, 1.0, 2.0]
+              quote: false
+  - name: fct_pokemon_stats
+    description: >
+      Pokemon base stats pivoted into columns with BST and comparisons
+      against the average stats of Pokemon sharing the same primary type.
+    columns:
+      - name: pokemon_id
+        description: Unique Pokemon identifier
+        data_tests:
+          - unique
+          - not_null
+          - relationships:
+              to: ref('stg_pokemon')
+              field: pokemon_id
+      - name: pokemon_name
+        description: Pokemon name
+        data_tests:
+          - not_null
+      - name: primary_type
+        description: Primary type (slot = 1)
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('stg_types')
+              field: type_name
+      - name: secondary_type
+        description: Secondary type (slot = 2), null for single-type Pokemon
+      - name: hp
+        description: Base HP stat
+        data_tests:
+          - not_null
+      - name: attack
+        description: Base Attack stat
+        data_tests:
+          - not_null
+      - name: defense
+        description: Base Defense stat
+        data_tests:
+          - not_null
+      - name: sp_attack
+        description: Base Special Attack stat
+        data_tests:
+          - not_null
+      - name: sp_defense
+        description: Base Special Defense stat
+        data_tests:
+          - not_null
+      - name: speed
+        description: Base Speed stat
+        data_tests:
+          - not_null
+      - name: base_stat_total
+        description: Sum of all six base stats (BST)
+        data_tests:
+          - not_null
+      - name: hp_vs_type_avg
+        description: Difference between Pokemon HP and average HP for its primary type
+      - name: attack_vs_type_avg
+        description: Difference between Pokemon Attack and average Attack for its primary type
+      - name: defense_vs_type_avg
+        description: Difference between Pokemon Defense and average Defense for its primary type
+      - name: sp_attack_vs_type_avg
+        description: Difference between Pokemon Sp. Atk and average Sp. Atk for its primary type
+      - name: sp_defense_vs_type_avg
+        description: Difference between Pokemon Sp. Def and average Sp. Def for its primary type
+      - name: speed_vs_type_avg
+        description: Difference between Pokemon Speed and average Speed for its primary type
+
+  - name: fct_competitive_moves
+    description: >
+      Pokemon movepools joined to move details with STAB flag
+      and STAB-adjusted power calculations.
+    columns:
+      - name: pokemon_name
+        description: Pokemon that can learn the move
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('stg_pokemon')
+              field: pokemon_name
+      - name: move_name
+        description: Name of the learnable move
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('stg_moves')
+              field: move_name
+      - name: move_type
+        description: Elemental type of the move
+        data_tests:
+          - not_null
+      - name: power
+        description: Base power of the move (null for status moves)
+      - name: accuracy
+        description: Accuracy percentage
+      - name: damage_class
+        description: Damage category (physical, special, or status)
+        data_tests:
+          - accepted_values:
+              values: ["physical", "special", "status"]
+      - name: is_stab
+        description: True when move type matches primary or secondary Pokemon type
+        data_tests:
+          - not_null
+      - name: stab_adjusted_power
+        description: Power multiplied by 1.5 when STAB applies; null for status moves

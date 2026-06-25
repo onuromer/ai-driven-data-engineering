@@ -1,35 +1,65 @@
-# Pokedex Platform Infrastructure
+# Terraform Infrastructure
 
-This directory contains Terraform configuration files to provision Google Cloud Platform (GCP) resources for the production deployment of the Pokedex competitive analytics platform.
+This directory contains Terraform configurations to provision GCP resources for the Pokedex data platform.
 
 ## Resources Created
 
-1. **BigQuery Datasets**:
-   - `pokedex_raw` (stores raw API data loaded by `dlt`)
-   - `pokedex_staging` (stores cleaned dbt staging views)
-   - `pokedex_marts` (stores analytical dbt fact and dimension tables)
-2. **Google Cloud Storage (GCS) Bucket**:
-   - Staging bucket for `dlt` pipeline loading. Includes a lifecycle policy to automatically delete temporary files after 7 days.
+| Resource | Name | Description |
+|----------|------|-------------|
+| BigQuery Dataset | `pokedex_raw` | Raw data layer — dlt pipeline output |
+| BigQuery Dataset | `pokedex_staging` | Staging layer — cleaned dbt models |
+| BigQuery Dataset | `pokedex_marts` | Marts layer — analytical dbt models |
+| GCS Bucket | `<gcs_bucket_name>` | Staging bucket for dlt BigQuery loads |
 
 ## Prerequisites
 
-- Terraform CLI installed.
-- Access to a GCP project.
-- Google Cloud SDK authenticated via:
-  ```bash
-  gcloud auth application-default login
-  ```
+1. **Google Cloud Project**: A GCP project must already exist.
+2. **Google Cloud SDK**: Install [gcloud](https://cloud.google.com/sdk/docs/install) and authenticate:
+   ```bash
+   gcloud auth login
+   gcloud auth application-default login
+   ```
+3. **Terraform**: Version >= 1.5. Install via [tfenv](https://github.com/tfutils/tfenv) or [direct download](https://www.terraform.io/downloads).
+4. **Permissions**: Your account needs BigQuery Admin and Storage Admin roles on the project.
 
 ## Usage
 
-1. Copy the example variables file:
-   ```bash
-   cp terraform.tfvars.example terraform.tfvars
-   ```
-2. Edit `terraform.tfvars` with your `project_id`, desired `region`, and a unique `bucket_name`.
-3. Initialize and apply:
-   ```bash
-   terraform init
-   terraform plan
-   terraform apply
-   ```
+```bash
+cd infra
+
+# 1. Create your variable values file
+cp terraform.tfvars.example terraform.tfvars
+# Edit terraform.tfvars with your project-specific values
+
+# 2. Initialize Terraform
+terraform init
+
+# 3. Preview changes
+terraform plan
+
+# 4. Apply changes
+terraform apply
+
+# 5. (Optional) Tear down resources
+terraform destroy
+```
+
+## Variables
+
+| Variable | Required | Default | Description |
+|----------|----------|---------|-------------|
+| `gcp_project_id` | Yes | — | Google Cloud project ID |
+| `gcp_location` | No | `us-central1` | GCP region for all resources |
+| `gcs_bucket_name` | Yes | — | Name for the dlt staging GCS bucket |
+
+## Outputs
+
+After `terraform apply`, the following values are available:
+
+| Output | Description |
+|--------|-------------|
+| `bigquery_dataset_raw` | Dataset ID for the raw layer |
+| `bigquery_dataset_staging` | Dataset ID for the staging layer |
+| `bigquery_dataset_marts` | Dataset ID for the marts layer |
+| `gcs_staging_bucket_name` | GCS bucket name |
+| `gcs_staging_bucket_url` | GCS bucket URL (`gs://...`) |

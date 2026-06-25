@@ -12,7 +12,7 @@ with pokemon_types as (
 pokemon_moves as (
     select
         cast(raw_pokemon.id as integer) as pokemon_id,
-        cast(pokemon_moves.move__name as string) as move_name
+        cast(pokemon_moves.move__name as {{ dbt.type_string() }}) as move_name
     from {{ source('raw', 'pokemon') }} as raw_pokemon
     inner join {{ source('raw', 'pokemon__moves') }} as pokemon_moves
         on raw_pokemon._dlt_id = pokemon_moves._dlt_root_id
@@ -34,8 +34,8 @@ select
         when moves.power is null then null
         when moves.move_type = pokemon_types.primary_type
             or moves.move_type = pokemon_types.secondary_type
-            then cast(moves.power as {{ 'float64' if target.type == 'bigquery' else 'double' }}) * 1.5
-        else cast(moves.power as {{ 'float64' if target.type == 'bigquery' else 'double' }})
+            then cast(moves.power as {{ dbt.type_float() }}) * 1.5
+        else cast(moves.power as {{ dbt.type_float() }})
     end as stab_adjusted_power
 from {{ ref('stg_pokemon') }} as pokemon
 inner join pokemon_types

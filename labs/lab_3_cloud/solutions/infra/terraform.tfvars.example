@@ -1,3 +1,6 @@
-project_id  = "your-gcp-project-id"
-region      = "us-central1"
-bucket_name = "your-unique-pokedex-dlt-staging-bucket-name"
+# Copy this file to terraform.tfvars and replace placeholder values.
+# terraform.tfvars is gitignored — never commit real values.
+
+gcp_project_id  = "your-gcp-project-id"
+gcp_location    = "us-central1"
+gcs_bucket_name = "your-project-id-pokedex-dlt-staging"

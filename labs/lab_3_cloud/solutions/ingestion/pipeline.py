@@ -104,6 +104,7 @@ def pokemon_source(pokemon_limit: int = 151):
     ]
 
 def get_pokemon_limit() -> int:
+    """Reads the POKEMON_LIMIT environment variable and returns the configured limit."""
     limit_env = os.environ.get("POKEMON_LIMIT")
     if limit_env is not None:
         try:
@@ -114,50 +115,81 @@ def get_pokemon_limit() -> int:
             return 151
     return 151  # Default fallback if unset
 
-def run_pipeline(db_path: str = "data/pokedex.db", pokemon_limit: int = 151):
-    dest = os.environ.get("PIPELINE_DESTINATION", "duckdb").lower()
-    logger.info(f"Starting PokeAPI ingestion pipeline. Limit: {pokemon_limit}, Destination: {dest}")
-    
-    source = pokemon_source(pokemon_limit=pokemon_limit)
-    
-    if dest == "bigquery":
-        # Configure BigQuery destination with GCS staging
-        bucket_url = os.environ.get("GCS_BUCKET_URL") or os.environ.get("DESTINATION__FILESYSTEM__BUCKET_URL")
-        if not bucket_url:
-            raise ValueError(
-                "Either GCS_BUCKET_URL or DESTINATION__FILESYSTEM__BUCKET_URL environment variable must be set "
-                "when PIPELINE_DESTINATION is set to 'bigquery'"
-            )
-        
-        # Set the bucket URL environment variable expected by dlt's filesystem staging
-        if "DESTINATION__FILESYSTEM__BUCKET_URL" not in os.environ:
-            os.environ["DESTINATION__FILESYSTEM__BUCKET_URL"] = bucket_url
-            
+
+def get_destination() -> str:
+    """Reads the PIPELINE_DESTINATION environment variable and returns the destination name.
+
+    Returns 'duckdb' (default) or 'bigquery'.
+    """
+    dest = os.environ.get("PIPELINE_DESTINATION", "duckdb").lower().strip()
+    if dest not in ("duckdb", "bigquery"):
+        logger.warning(f"Unknown PIPELINE_DESTINATION '{dest}'. Falling back to 'duckdb'.")
+        return "duckdb"
+    return dest
+
+
+def run_pipeline(db_path: str = "data/pokedex.db", pokemon_limit: int = 151, destination: str | None = None):
+    """Runs the PokeAPI ingestion pipeline.
+
+    Args:
+        db_path: Path to the local DuckDB database (used only when destination is 'duckdb').
+        pokemon_limit: Maximum number of Pokemon to ingest (0 = all).
+        destination: Override for the pipeline destination ('duckdb' or 'bigquery').
+                     If None, reads from PIPELINE_DESTINATION env var (default: 'duckdb').
+    """
+    if destination is None:
+        destination = get_destination()
+
+    logger.info(f"Starting PokeAPI ingestion pipeline. Destination: {destination}, Limit: {pokemon_limit}")
+
+    if destination == "bigquery":
+        gcp_project_id = os.environ.get("GCP_PROJECT_ID")
+        gcs_bucket_name = os.environ.get("GCS_BUCKET_NAME")
+        gcp_location = os.environ.get("GCP_LOCATION", "us-central1")
+
+        if not gcp_project_id:
+            raise ValueError("GCP_PROJECT_ID environment variable is required when PIPELINE_DESTINATION=bigquery")
+        if not gcs_bucket_name:
+            raise ValueError("GCS_BUCKET_NAME environment variable is required when PIPELINE_DESTINATION=bigquery")
+
+        bucket_url = f"gs://{gcs_bucket_name}"
+        logger.info(f"BigQuery target — Project: {gcp_project_id}, Location: {gcp_location}, GCS staging bucket: {bucket_url}")
+
+        # Set dlt config via environment variables to ensure the correct
+        # GCP project and location are used (ADC may default to a different project).
+        os.environ.setdefault("DESTINATION__BIGQUERY__CREDENTIALS__PROJECT_ID", gcp_project_id)
+        os.environ.setdefault("DESTINATION__BIGQUERY__LOCATION", gcp_location)
+        os.environ.setdefault("DESTINATION__FILESYSTEM__BUCKET_URL", bucket_url)
+
         pipeline = dlt.pipeline(
             pipeline_name="pokemon_analytics",
             destination="bigquery",
             staging="filesystem",
-            dataset_name="pokedex_raw"
+            dataset_name="pokedex_raw",
         )
-        # Using Application Default Credentials automatically (no custom credentials argument needed)
+
+        source = pokemon_source(pokemon_limit=pokemon_limit)
         info = pipeline.run(source)
     else:
-        # Default local DuckDB destination
+        logger.info(f"DuckDB target — Database: {db_path}")
+
         db_dir = os.path.dirname(db_path)
         if db_dir and not os.path.exists(db_dir):
             os.makedirs(db_dir, exist_ok=True)
-            
+
         pipeline = dlt.pipeline(
             pipeline_name="pokemon_analytics",
             destination="duckdb",
-            dataset_name="raw"
+            dataset_name="raw",
         )
+
+        source = pokemon_source(pokemon_limit=pokemon_limit)
         info = pipeline.run(source, credentials=f"duckdb:///{db_path}")
-        
+
     logger.info(f"Pipeline completed successfully. Loading report:\n{info}")
     return info
+
 
 if __name__ == "__main__":
     limit = get_pokemon_limit()
     run_pipeline(pokemon_limit=limit)
-
