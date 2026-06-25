@@ -55,6 +55,8 @@ Use the prompt from [`prompts/03_implement_cloud.md`](prompts/03_implement_cloud
    - **dbt adaptation** (`prod` target in `profiles.yml` using `dbt-bigquery`, SQL dialect fixes)
 3. Review the generated code before applying
 
+**Expect some debugging!** Moving from DuckDB to BigQuery involves dialect differences, API changes, and environment configuration. When something fails, paste the error into your AI assistant and let it fix it — that's real-world vibe coding. Common issues include wrong dlt API arguments, BigQuery SQL syntax differences, and mismatched environment variable names.
+
 ### Step 4 — Deploy to GCP (10 min)
 
 1. Configure Terraform variables — copy the example file and fill in your GCP project details:
