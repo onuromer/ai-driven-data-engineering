@@ -74,17 +74,19 @@ Use the prompt from [`prompts/03_implement_cloud.md`](prompts/03_implement_cloud
    terraform plan
    terraform apply
    ```
-3. Set the environment variables needed by the pipeline. First, check the available Terraform outputs and your `terraform.auto.tfvars` for project/region values:
+3. Set the environment variables needed by the pipeline. The exact variable names depend on what your AI generated — check `ingestion/pipeline.py` and `transform/profiles.yml` for the expected names. Use `terraform output` and your `terraform.auto.tfvars` for the values:
    ```bash
    terraform output
+   grep environ ingestion/pipeline.py
    ```
-   Then set the variables (adjust output names and values to match yours):
+   Then set the variables, for example:
    ```bash
    export PIPELINE_DESTINATION=bigquery
-   export GCS_BUCKET_URL=$(terraform output -raw gcs_staging_bucket_url)
-   export GCP_PROJECT="your-gcp-project-id"
+   export GCS_BUCKET_NAME=$(terraform output -raw gcs_staging_bucket_name)
+   export GCP_PROJECT_ID="your-gcp-project-id"
    export GCP_LOCATION="us-central1"
    ```
+   **Note:** Your variable names may differ (e.g., `GCS_BUCKET_URL` vs `GCS_BUCKET_NAME`). Check your pipeline code.
 4. Run the dlt pipeline targeting BigQuery (this takes ~4 minutes):
    ```bash
    cd ..
