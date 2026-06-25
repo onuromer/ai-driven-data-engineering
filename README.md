@@ -40,7 +40,7 @@ By the end of the day, you'll have built a **complete data platform from scratch
                  |
        +---------+---------+
        |         |         |
-   Airflow   Streamlit   BQML/Gemini          <- Optional Labs
+   Airflow   Streamlit   BQML/Gemini   ADK Agent   <- Optional Labs
 ```
 
 The data source is **PokeAPI** — a free, public REST API with a rich, nested data model (Pokemon, types, stats, moves, evolution chains). It's fun, it requires zero setup, and its complexity mirrors real-world data engineering challenges: nested JSON, one-to-many relationships, and multi-entity joins.
@@ -104,6 +104,7 @@ All core tools are **open source** — the skills you learn transfer to any clou
 | Orchestration | [Apache Airflow](https://airflow.apache.org/) (optional) |
 | Visualization | [Streamlit](https://streamlit.io/) (optional) |
 | AI/ML | [BQML](https://cloud.google.com/bigquery/docs/bqml-introduction) + [Gemini](https://cloud.google.com/bigquery/docs/generate-text) (optional) |
+| Data Agent | [Google ADK](https://adk.dev/) + Gemini (optional) |
 
 ## AI Tools
 
