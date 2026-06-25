@@ -92,6 +92,7 @@ In this lab you'll orchestrate the full data pipeline (dlt ingestion → dbt tra
 | DAG import errors in Airflow | Check the Airflow logs — common issues are missing Python packages (add them to `pypi_packages` in Terraform) |
 | dbt fails in Airflow | Ensure `dbt-core` and `dbt-bigquery` are in the environment's `pypi_packages`. Check the BigQuery connection config |
 | Permission denied | Verify the Airflow service account has BigQuery and GCS permissions |
+| Terraform "Inconsistent dependency lock file" | Run `terraform init -upgrade` before `terraform plan` — the Composer config adds new providers |
 
 ## Falling Behind?
 
