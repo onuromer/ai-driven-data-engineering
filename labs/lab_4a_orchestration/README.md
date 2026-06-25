@@ -47,15 +47,27 @@ In this lab you'll orchestrate the full data pipeline (dlt ingestion → dbt tra
 
 ### Step 3 — Deploy to Managed Service for Apache Airflow (10 min)
 
-1. Apply the Terraform to provision the Airflow environment:
+1. Initialize and apply the Terraform (includes Composer environment, DAG deployment, and variable import):
    ```bash
    cd infra
+   terraform init -upgrade
    terraform plan
    terraform apply
    ```
-   Note: Environment provisioning takes 15–25 minutes. The instructor may have pre-provisioned environments.
-2. Deploy DAGs to the Airflow GCS bucket
-3. Import Airflow Variables
+   Note: Composer 3 environment provisioning takes **20–30 minutes**. The instructor may have pre-provisioned environments. Terraform automatically handles DAG upload, dbt project upload, and Airflow variable import as part of the apply.
+
+2. Once provisioning completes, get the Airflow UI URL:
+   ```bash
+   terraform output composer_airflow_uri
+   ```
+
+3. If Airflow variables were not imported automatically (check the Airflow UI → Admin → Variables), import them manually:
+   ```bash
+   gcloud composer environments run $(terraform output -raw composer_environment_name) \
+     --location $(cat terraform.auto.tfvars | grep gcp_location | cut -d'"' -f2) \
+     --project $(cat terraform.auto.tfvars | grep gcp_project_id | cut -d'"' -f2) \
+     variables import -- /home/airflow/gcs/data/variables.json
+   ```
 
 ### Step 4 — Run and Monitor (5–10 min)
 
