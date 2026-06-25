@@ -16,19 +16,17 @@ $RepoDir = Split-Path -Parent (Split-Path -Parent $ScriptDir)
 Write-Host ""
 Write-Host "==> Preparing Lab 4b: Copying Lab 3 solutions to $ProjectDir"
 
-# Lab 3: Terraform + adapted pipeline + dbt profiles + learnings
+# Lab 3: Terraform + adapted pipeline + dbt config + learnings + .env.example
 Copy-Item "$RepoDir\labs\lab_3_cloud\solutions\infra" -Destination "$ProjectDir\" -Recurse -Force
 Copy-Item "$RepoDir\labs\lab_3_cloud\solutions\ingestion\pipeline.py" -Destination "$ProjectDir\ingestion\" -Force
-Copy-Item "$RepoDir\labs\lab_3_cloud\solutions\transform\profiles.yml" -Destination "$ProjectDir\transform\" -Force
-Copy-Item "$RepoDir\labs\lab_3_cloud\solutions\transform\macros\generate_schema_name.sql" -Destination "$ProjectDir\transform\macros\" -Force
-Copy-Item "$RepoDir\labs\lab_3_cloud\solutions\transform\models\staging\*" -Destination "$ProjectDir\transform\models\staging\" -Force
-Copy-Item "$RepoDir\labs\lab_3_cloud\solutions\transform\models\marts\*" -Destination "$ProjectDir\transform\models\marts\" -Force
+Copy-Item "$RepoDir\labs\lab_3_cloud\solutions\transform\*" -Destination "$ProjectDir\transform\" -Recurse -Force
 Copy-Item "$RepoDir\labs\lab_3_cloud\solutions\docs\prds\*" -Destination "$ProjectDir\docs\prds\" -Force
 Copy-Item "$RepoDir\labs\lab_3_cloud\solutions\docs\tasks\*" -Destination "$ProjectDir\docs\tasks\" -Force
+Copy-Item "$RepoDir\labs\lab_3_cloud\solutions\.env.example" -Destination "$ProjectDir\" -Force
 if (Test-Path "$RepoDir\labs\lab_3_cloud\solutions\docs\learnings") {
     Copy-Item "$RepoDir\labs\lab_3_cloud\solutions\docs\learnings\*" -Destination "$ProjectDir\docs\learnings\" -Force
 }
-Write-Host "    Lab 3 solutions copied (Terraform + adapted pipeline + dbt BigQuery config + learnings)"
+Write-Host "    Lab 3 solutions copied (Terraform + pipeline + dbt + .env.example + learnings)"
 
 Write-Host ""
 Write-Host "==> Ready for Lab 4b!"
