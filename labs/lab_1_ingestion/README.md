@@ -112,6 +112,20 @@ Use the `finalize-tasks` skill to clean up and create a PR.
 | AI skips git-worktree | Some IDE tools restrict file access — the AI may fall back to `git checkout -b` instead. This is fine for the workshop |
 | Nested data not handled well | Ask the AI to check dlt's documentation via Context7 for nested JSON handling |
 
+## Falling Behind?
+
+If you didn't complete Lab 0 or want to start fresh with the reference solutions:
+
+```bash
+# macOS/Linux
+bash labs/lab_1_ingestion/prepare.sh ~/my-pokedex-project
+
+# Windows (PowerShell)
+.\labs\lab_1_ingestion\prepare.ps1 -ProjectDir ~\my-pokedex-project
+```
+
+This copies the Lab 0 reference solutions (PRD + tasks) into your project.
+
 ## Next
 
 Continue to [Lab 2 — Transform It](../lab_2_transformation/README.md) where you'll build dbt models on top of the data you just ingested.

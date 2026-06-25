@@ -93,6 +93,20 @@ In this lab you'll orchestrate the full data pipeline (dlt ingestion → dbt tra
 | dbt fails in Airflow | Ensure `dbt-core` and `dbt-bigquery` are in the environment's `pypi_packages`. Check the BigQuery connection config |
 | Permission denied | Verify the Airflow service account has BigQuery and GCS permissions |
 
+## Falling Behind?
+
+If you didn't complete previous labs or want to start fresh with the reference solutions:
+
+```bash
+# macOS/Linux
+bash labs/lab_4a_orchestration/prepare.sh ~/my-pokedex-project
+
+# Windows (PowerShell)
+.\labs\lab_4a_orchestration\prepare.ps1 -ProjectDir ~\my-pokedex-project
+```
+
+This copies Lab 0-3 reference solutions into your project and runs the ingestion pipeline if needed.
+
 ## Next
 
 Try another optional lab:

@@ -124,6 +124,20 @@ Capture what you learned during this lab.
 | "pending load packages" warning | If you interrupted a previous run, dlt resumes from where it stopped. Let it finish, then run again for fresh data |
 | `google-cloud-bigquery-storage` warning | Run `uv pip install google-cloud-bigquery-storage` — it's needed for optimized BigQuery reads |
 
+## Falling Behind?
+
+If you didn't complete previous labs or want to start fresh with the reference solutions:
+
+```bash
+# macOS/Linux
+bash labs/lab_3_cloud/prepare.sh ~/my-pokedex-project
+
+# Windows (PowerShell)
+.\labs\lab_3_cloud\prepare.ps1 -ProjectDir ~\my-pokedex-project
+```
+
+This copies Lab 0 + Lab 1 + Lab 2 reference solutions into your project and runs the ingestion pipeline if needed.
+
 ## Next
 
 You've completed the core workshop! If time allows, continue with one of the optional labs:

@@ -64,6 +64,20 @@ In this lab you'll use AI to create machine learning models and generative AI qu
 - [ ] SQL files or dbt models for all queries exist in the project
 - [ ] PR created
 
+## Falling Behind?
+
+If you didn't complete previous labs or want to start fresh with the reference solutions:
+
+```bash
+# macOS/Linux
+bash labs/lab_4c_ai_ml/prepare.sh ~/my-pokedex-project
+
+# Windows (PowerShell)
+.\labs\lab_4c_ai_ml\prepare.ps1 -ProjectDir ~\my-pokedex-project
+```
+
+This copies Lab 0-3 reference solutions into your project and runs the ingestion pipeline if needed.
+
 ## Next
 
 Try another optional lab:
