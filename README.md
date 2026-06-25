@@ -38,8 +38,8 @@ By the end of the day, you'll have built a **complete data platform from scratch
             [ dbt Models ]                     <- Lab 2: Transformation
             staging + marts
                  |
-       +---------+---------+
-       |         |         |
+       +---------+------------+------------+
+       |         |            |            |
    Airflow   Streamlit   BQML/Gemini   ADK Agent   <- Optional Labs
 ```
 
