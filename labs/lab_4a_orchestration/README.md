@@ -47,15 +47,27 @@ In this lab you'll orchestrate the full data pipeline (dlt ingestion → dbt tra
 
 ### Step 3 — Deploy to Managed Service for Apache Airflow (10 min)
 
-1. Apply the Terraform to provision the Airflow environment:
+1. Initialize and apply the Terraform (includes Composer environment, DAG deployment, and variable import):
    ```bash
    cd infra
+   terraform init -upgrade
    terraform plan
    terraform apply
    ```
-   Note: Environment provisioning takes 15–25 minutes. The instructor may have pre-provisioned environments.
-2. Deploy DAGs to the Airflow GCS bucket
-3. Import Airflow Variables
+   Note: Composer 3 environment provisioning takes **20–30 minutes**. The instructor may have pre-provisioned environments. Terraform automatically handles DAG upload, dbt project upload, and Airflow variable import as part of the apply.
+
+2. Once provisioning completes, get the Airflow UI URL:
+   ```bash
+   terraform output composer_airflow_uri
+   ```
+
+3. If Airflow variables were not imported automatically (check the Airflow UI → Admin → Variables), import them manually:
+   ```bash
+   gcloud composer environments run $(terraform output -raw composer_environment_name) \
+     --location $(cat terraform.auto.tfvars | grep gcp_location | cut -d'"' -f2) \
+     --project $(cat terraform.auto.tfvars | grep gcp_project_id | cut -d'"' -f2) \
+     variables import -- /home/airflow/gcs/data/variables.json
+   ```
 
 ### Step 4 — Run and Monitor (5–10 min)
 
@@ -92,9 +104,25 @@ In this lab you'll orchestrate the full data pipeline (dlt ingestion → dbt tra
 | DAG import errors in Airflow | Check the Airflow logs — common issues are missing Python packages (add them to `pypi_packages` in Terraform) |
 | dbt fails in Airflow | Ensure `dbt-core` and `dbt-bigquery` are in the environment's `pypi_packages`. Check the BigQuery connection config |
 | Permission denied | Verify the Airflow service account has BigQuery and GCS permissions |
+| Terraform "Inconsistent dependency lock file" | Run `terraform init -upgrade` before `terraform plan` — the Composer config adds new providers |
+
+## Falling Behind?
+
+If you didn't complete previous labs or want to start fresh with the reference solutions:
+
+```bash
+# macOS/Linux
+bash labs/lab_4a_orchestration/prepare.sh ~/my-pokedex-project
+
+# Windows (PowerShell)
+.\labs\lab_4a_orchestration\prepare.ps1 -ProjectDir ~\my-pokedex-project
+```
+
+This copies Lab 0-3 reference solutions into your project and runs the ingestion pipeline if needed.
 
 ## Next
 
 Try another optional lab:
 - [Lab 4b — Visualize It](../lab_4b_visualization/README.md)
 - [Lab 4c — AI/ML on It](../lab_4c_ai_ml/README.md)
+- [Lab 4d — Talk to It](../lab_4d_data_agent/README.md)

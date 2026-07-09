@@ -143,6 +143,20 @@ Capture what you learned during this lab.
 | IDE asks about a "parent git repository" | Click "Never" — this means you opened the `starter/` folder inside the workshop repo instead of your own project copy. See [Setup Guide](../../SETUP.md) step 8 |
 | Context7 not providing dbt docs | Ask explicitly: "Use Context7 to look up dbt-duckdb adapter configuration" |
 
+## Falling Behind?
+
+If you didn't complete previous labs or want to start fresh with the reference solutions:
+
+```bash
+# macOS/Linux
+bash labs/lab_2_transformation/prepare.sh ~/my-pokedex-project
+
+# Windows (PowerShell)
+.\labs\lab_2_transformation\prepare.ps1 -ProjectDir ~\my-pokedex-project
+```
+
+This copies Lab 0 + Lab 1 reference solutions into your project and runs the ingestion pipeline if needed.
+
 ## Next
 
 Continue to [Lab 3 — Ship It](../lab_3_cloud/README.md) where you'll adapt this pipeline for Google Cloud.

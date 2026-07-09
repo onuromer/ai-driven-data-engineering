@@ -38,9 +38,9 @@ By the end of the day, you'll have built a **complete data platform from scratch
             [ dbt Models ]                     <- Lab 2: Transformation
             staging + marts
                  |
-       +---------+---------+
-       |         |         |
-   Airflow   Streamlit   BQML/Gemini          <- Optional Labs
+       +---------+------------+------------+
+       |         |            |            |
+   Airflow   Streamlit   BQML/Gemini   ADK Agent   <- Optional Labs
 ```
 
 The data source is **PokeAPI** — a free, public REST API with a rich, nested data model (Pokemon, types, stats, moves, evolution chains). It's fun, it requires zero setup, and its complexity mirrors real-world data engineering challenges: nested JSON, one-to-many relationships, and multi-entity joins.
@@ -88,6 +88,7 @@ For faster groups or extended workshop formats:
 | **4a — Orchestrate It** | An Airflow DAG that schedules the full pipeline |
 | **4b — Visualize It** | A Streamlit dashboard with power rankings, type heatmaps, and move analytics |
 | **4c — AI/ML on It** | A BQML model to predict Pokemon types from stats + Gemini-powered scouting reports |
+| **4d — Talk to It** | A conversational data agent (Google ADK) that answers natural-language questions about your data |
 
 ## Tech Stack
 
@@ -103,6 +104,7 @@ All core tools are **open source** — the skills you learn transfer to any clou
 | Orchestration | [Apache Airflow](https://airflow.apache.org/) (optional) |
 | Visualization | [Streamlit](https://streamlit.io/) (optional) |
 | AI/ML | [BQML](https://cloud.google.com/bigquery/docs/bqml-introduction) + [Gemini](https://cloud.google.com/bigquery/docs/generate-text) (optional) |
+| Data Agent | [Google ADK](https://adk.dev/) + Gemini (optional) |
 
 ## AI Tools
 
@@ -163,7 +165,8 @@ ai-driven-data-engineering/
 │   ├── lab_3_cloud/                 # Ship it
 │   ├── lab_4a_orchestration/        # Orchestrate it (optional)
 │   ├── lab_4b_visualization/        # Visualize it (optional)
-│   └── lab_4c_ai_ml/               # AI/ML on it (optional)
+│   ├── lab_4c_ai_ml/               # AI/ML on it (optional)
+│   └── lab_4d_data_agent/          # Talk to it (optional)
 └── docs/                 # Workshop outline and planning
 ```
 

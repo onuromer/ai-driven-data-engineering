@@ -1,0 +1,19 @@
+pokedex:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: ../data/pokedex.db
+      schema: main
+    test:
+      type: duckdb
+      path: ../data/test_pokedex.db
+      schema: main
+    prod:
+      type: bigquery
+      method: oauth
+      project: "{{ env_var('GCP_PROJECT_ID') }}"
+      dataset: pokedex_raw
+      location: "{{ env_var('GCP_LOCATION', 'us-central1') }}"
+      threads: 4
+      timeout_seconds: 300

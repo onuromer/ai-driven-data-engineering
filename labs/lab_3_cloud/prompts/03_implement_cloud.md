@@ -49,3 +49,6 @@ Verify:
 - Terraform files use variables, not hardcoded project IDs
 - The dlt pipeline still works locally (DuckDB) without setting env vars
 - dbt's `dev` target is unchanged
+- If any staging models reference `_dlt_loads`, remove those joins (table may not exist in BigQuery)
+- If any column uses a reserved keyword like `order`, ensure it's aliased or backtick-quoted for BigQuery
+- Run `dbt compile --target prod` to catch BigQuery SQL errors before deploying

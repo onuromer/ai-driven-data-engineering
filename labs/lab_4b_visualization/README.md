@@ -63,8 +63,23 @@ In this lab you'll have AI build a Streamlit dashboard that visualizes the analy
 - [ ] App runs without errors
 - [ ] PR created
 
+## Falling Behind?
+
+If you didn't complete previous labs or want to start fresh with the reference solutions:
+
+```bash
+# macOS/Linux
+bash labs/lab_4b_visualization/prepare.sh ~/my-pokedex-project
+
+# Windows (PowerShell)
+.\labs\lab_4b_visualization\prepare.ps1 -ProjectDir ~\my-pokedex-project
+```
+
+This copies Lab 0-3 reference solutions into your project and runs the ingestion pipeline if needed.
+
 ## Next
 
 Try another optional lab:
 - [Lab 4a — Orchestrate It](../lab_4a_orchestration/README.md)
 - [Lab 4c — AI/ML on It](../lab_4c_ai_ml/README.md)
+- [Lab 4d — Talk to It](../lab_4d_data_agent/README.md)
