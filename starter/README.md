@@ -106,12 +106,22 @@ uv pip install -r requirements.txt
 uv run python ingestion/pipeline.py
 ```
 
+Control how many Pokemon detail pages are fetched via `POKEMON_LIMIT`
+(default `151` when unset; `0` fetches the full catalog). Types, stats, moves,
+and abilities are always fetched in full regardless of this limit.
+
 ### Run dbt Models
+
+The `profiles.yml` lives inside `transform/`, so pass `--profiles-dir .`:
 
 ```bash
 cd transform
-dbt build
+dbt build --profiles-dir .              # dev target -> data/pokedex.db
+dbt build --profiles-dir . --target test  # test target -> data/test_pokedex.db
 ```
+
+Staging models materialize as views in the `staging` schema; marts materialize
+as tables in the `marts` schema (both inside `data/pokedex.db`).
 
 ### Run Tests
 

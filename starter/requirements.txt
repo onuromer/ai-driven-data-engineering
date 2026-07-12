@@ -3,6 +3,7 @@ dbt-core
 dbt-duckdb
 dbt-bigquery
 pytest
+responses
 requests
 google-cloud-storage
 google-cloud-bigquery-storage
